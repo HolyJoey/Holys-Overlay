@@ -4,7 +4,7 @@
 -- Sapphire#6031: Memory pools
 -- SoulReaper#2005: Helped me with some examples
 
-util.require_natives(1651208000) 
+util.require_natives(1640181023) 
 UI = {}
 
 UI.new = function()
@@ -40,9 +40,6 @@ UI.new = function()
         ["b"] = 0.0,
         ["a"] = 1
     }
-
-    local cursor_texture = directx.create_texture(filesystem.scripts_dir() .. "\\resources\\" .. "imGUI_cursor.png")
-    local checkmark_texture = directx.create_texture(filesystem.scripts_dir() .. "\\resources\\" .. "imGUI_checkmark.png")
 
     local plain_text_size = 0.5
     local subhead_text_size = 0.6
