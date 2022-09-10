@@ -1,4 +1,4 @@
-# Holy's Overlay
+# Holy's Overlays
 LUA script for Stand
 
 Features:
