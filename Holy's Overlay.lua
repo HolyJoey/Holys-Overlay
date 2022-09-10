@@ -738,7 +738,7 @@ local regionDetect = {
     [12] = {kick = false, lang = "Chinese Simplified"},
 }
 
-menu.toggle(menu.my_root(), "Players Window", {"PlayerWindow"}, "A nice player window",
+menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOcerlay"}, "A nice player overlay",
     function(state)
         UItoggle = state
         while UItoggle do
@@ -815,7 +815,7 @@ local vehInterface = memory.read_long(replayInterface + 0x0010)
 local objectInterface = memory.read_long(replayInterface + 0x0028)
 local pickupInterface = memory.read_long(replayInterface + 0x0020)
 
-menu.toggle(menu.my_root(), "Info Window", {"InfoWindow"}, "Info overlay in a box",
+menu.toggle(menu.my_root(), "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute box",
     function(state2)
         UItoggle2 = state2
         while UItoggle2 do
