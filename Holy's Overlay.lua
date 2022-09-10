@@ -775,7 +775,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
                     end
             end
             myUI.finish()
-            myUI.begin("Language", 0.292, 0.02, "kpjbdgkzjsdbg")
+            myUI.begin(" Language ", 0.292, 0.02, "kpjbdgkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                myUI.label(regionDetect[players.get_language(pid)].lang,"")
