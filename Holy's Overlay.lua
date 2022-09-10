@@ -738,7 +738,7 @@ local regionDetect = {
     [12] = {kick = false, lang = "Chinese Simplified"},
 }
 
-menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOcerlay"}, "A nice player overlay",
+menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player overlay",
     function(state)
         UItoggle = state
         while UItoggle do
@@ -755,7 +755,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOcerlay"}, "A nice player
                 myUI.label(players.get_rank(pid),"")
             end
             myUI.finish()
-            myUI.begin("Modder", 0.1615, 0.02, "kpj2bdgd2kzjsdbg")
+            myUI.begin("Modder", 0.160, 0.02, "kpj2bdgd2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.is_marked_as_modder(pid) then
@@ -765,7 +765,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOcerlay"}, "A nice player
                 end
             end
             myUI.finish()
-            myUI.begin("Attacker", 0.2235, 0.02, "kpjbdg2kzjsdbg")
+            myUI.begin("Attacker", 0.222, 0.02, "kpjbdg2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.is_marked_as_attacker(pid) then
@@ -775,13 +775,13 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOcerlay"}, "A nice player
                     end
             end
             myUI.finish()
-            myUI.begin("Language", 0.293, 0.02, "kpjbdgkzjsdbg")
+            myUI.begin("Language", 0.292, 0.02, "kpjbdgkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                myUI.label(regionDetect[players.get_language(pid)].lang,"")
             end
             myUI.finish()
-            myUI.begin("Input", 0.369, 0.02, "kpj2bdgd2hkzjsdbg")
+            myUI.begin("Input", 0.372, 0.02, "kpj2bdgd2hkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
             if players.is_using_controller(pid) then
@@ -791,7 +791,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOcerlay"}, "A nice player
 				end
             end
             myUI.finish()
-            myUI.begin("Vehicle", 0.424, 0.02, "kpfj2bdgd2hkzsdbg")
+            myUI.begin("Vehicle", 0.422, 0.02, "kpfj2bdgd2hkzsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
 				playerinfo1 = players.get_vehicle_model(pid)
