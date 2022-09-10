@@ -1,8 +1,8 @@
-# UI-Holy
+# Holy's Overlay
 LUA script for Stand
 
 Features:
-Enable a playerwindow displaying the following:
+Enable a player overlay displaying the following:
 - Name
 - Rank
 - Modder Status
@@ -11,7 +11,7 @@ Enable a playerwindow displaying the following:
 - Input Device
 - Vehicle
 
-Enable an window displaying info such as:
+Enable an info overlay displaying information like:
 - Host
 - Script Host
 - Current Time (IRL)
