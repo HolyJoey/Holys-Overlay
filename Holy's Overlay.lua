@@ -791,7 +791,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
 				end
             end
             myUI.finish()
-            myUI.begin("Vehicle", 0.422, 0.02, "kpfj2bdgd2hkzsdbg")
+            myUI.begin("Vehicle", 0.426, 0.02, "kpfj2bdgd2hkzsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
 				playerinfo1 = players.get_vehicle_model(pid)
