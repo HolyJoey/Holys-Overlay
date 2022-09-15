@@ -1,8 +1,8 @@
 -- Made by Holy#9756
 -- Credits to:
--- Murten#0001: His code as a base so credits to him
+-- Murten#0001: His code as a base
 -- Sapphire#6031: Memory pools
--- SoulReaper#2005: Helped me with some examples
+-- SoulReaper#2005: Helped me with some examples + my autism
 
 util.require_natives(1660775568) 
 UI = {}
@@ -809,79 +809,186 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
     end)
 
 -- Info Window
+
+--memory paths
 local replayInterface = memory.read_long(memory.rip(memory.scan("48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D") + 3))
 local pedInterface = memory.read_long(replayInterface + 0x0018)
 local vehInterface = memory.read_long(replayInterface + 0x0010)
 local objectInterface = memory.read_long(replayInterface + 0x0028)
 local pickupInterface = memory.read_long(replayInterface + 0x0020)
 
-menu.toggle(menu.my_root(), "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute box",
-    function(state2)
-        UItoggle2 = state2
-        while UItoggle2 do
-            local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
-    --#region window 3
-    myUI.begin("Info Overlay",0.17, 0.785, "asdfghjkl")
-    myUI.label("Host: ", players.get_name(players.get_host()), {
-        ["r"] = 1,
-        ["g"] = 1,
-        ["b"] = 1,
-        ["a"] = 1
-    })
-    myUI.label("Script Host: ", players.get_name(players.get_script_host()), {
-        ["r"] = 1,
-        ["g"] = 1,
-        ["b"] = 1,
-        ["a"] = 1
-    })
-    myUI.label("Time: ", os.date("%X"), {
-        ["r"] = 1,
-        ["g"] = 1,
-        ["b"] = 1,
-        ["a"] = 1
-    })
+--folders
+local info_root = menu.list(menu.my_root(), 'Info Overlay', {}, '')
+local info_options = menu.list(info_root, 'Info Overlay Options', {}, '')
 
-    myUI.label("FPS: ", fps, {
-        ["r"] = 1,
-        ["g"] = 1,
-        ["b"] = 1,
-        ["a"] = 1
-    })
 
-    myUI.label("Peds: ", memory.read_int(pedInterface + 0x0110).."/"..memory.read_int(pedInterface + 0x0108), {
-        ["r"] = 1,
-        ["g"] = 1,
-        ["b"] = 1,
-        ["a"] = 1
-    })
+--locals
+local session_host_toggle = false
+local session_script_host_toggle = false
+local players_toggle = false
+local time_toggle = false
+local fps_toggle = false
+local peds_toggle = false
+local vehicles_toggle = false
+local objects_toggle = false
+local pickups_toggle = false
+local white_colour = {r = 1.0, g = 1.0, b = 1.0, a = 1.0}
 
-    myUI.label("Vehicles: ", memory.read_int(vehInterface + 0x0190).."/"..memory.read_int(vehInterface + 0x0188), {
-        ["r"] = 1,
-        ["g"] = 1,
-        ["b"] = 1,
-        ["a"] = 1
-    })
-
-    myUI.label("Objects: ", memory.read_int(objectInterface + 0x0168).."/"..memory.read_int(objectInterface + 0x0160), {
-        ["r"] = 1,
-        ["g"] = 1,
-        ["b"] = 1,
-        ["a"] = 1
-    })
-
-    myUI.label("Pickups: ", memory.read_int(pickupInterface + 0x0110).."/"..memory.read_int(pickupInterface + 0x0108), {
-        ["r"] = 1,
-        ["g"] = 1,
-        ["b"] = 1,
-        ["a"] = 1
-    })
-
-    myUI.finish()
--- #endregio
+--toggles
+menu.toggle(info_options, "Session Host Toggle", {"SessionHostToggle"}, "", function(on)
+    session_host_toggle = on
     util.yield()
+end)
+menu.toggle(info_options, "Session Script Host Toggle", {"SessionScriptHostToggle"}, "", function(on)
+    session_script_host_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Players Toggle", {"PlayersToggle"}, "", function(on)
+    players_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Modders Toggle", {"ModdersToggle"}, "", function(on)
+    modders_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Friends Toggle", {"FriendsToggle"}, "", function(on)
+    friends_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Strangers Toggle", {"StrangersToggle"}, "", function(on)
+    stranger_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Time Toggle", {"TimeToggle"}, "", function(on)
+    time_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "FPS Toggle", {"FPSToggle"}, "", function(on)
+    fps_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Peds Toggle", {"PedsToggle"}, "", function(on)
+    peds_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Vehicles Toggle", {"VehiclesToggle"}, "", function(on)
+    vehicles_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Objects Toggle", {"ObjectsToggle"}, "", function(on)
+    objects_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Pickups Toggle", {"PickupsToggle"}, "", function(on)
+    pickups_toggle = on
+    util.yield()
+end)
+menu.toggle(info_options, "Empty Toggle", {"EmptyToggle"}, "A toggle to create some empty space where a session code can be put as an example.", function(on)
+    empty_toggle = on
+    util.yield()
+end)
+
+menu.toggle(info_root, "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute box", function(state)
+    UItoggle2 = state
+    while UItoggle2 do
+        --start the gui
+        myUI.begin("Info Overlay",0.17, 0.705, "asdfghjkl")
+
+        --count players in the session
+        local playercount = 0
+        for i, pid in pairs(players.list(true, true, true)) do
+            playercount = playercount + 1
+        end
+
+        --count modders in the session
+        local moddercount = 0
+        for i, pid in pairs(players.list(true, true, true)) do
+            if players.is_marked_as_modder(pid) then
+                moddercount = moddercount + 1
+            end
+        end
+
+        --count friends in the session
+        local friendcount = 0
+        for i, pid in pairs(players.list(false, true, false)) do
+            friendcount = friendcount + 1
+        end
+
+        --count strangers in the session
+        local strangercount = 0
+        for i, pid in pairs(players.list(false, false, true)) do
+            strangercount = strangercount + 1
+        end
+
+        --session host row
+        if session_host_toggle then
+            myUI.label("Host: ", players.get_name(players.get_host()), white_colour)
+        end
+
+        --script host row
+        if session_script_host_toggle then
+            myUI.label("Script Host: ", players.get_name(players.get_script_host()), white_colour)
+        end
+
+        --player count row
+        if players_toggle then
+            myUI.label("Players: ", playercount, white_colour)
+        end
+
+        --modder count row
+        if modders_toggle then
+            myUI.label("Modders: ", moddercount, white_colour)
+        end
+
+        --friend count row
+        if friends_toggle then
+            myUI.label("Friends: ", friendcount, white_colour)
+        end
+
+        --stranger count row
+        if stranger_toggle then
+            myUI.label("Strangers: ", strangercount, white_colour)
+        end
+
+        --time row
+        if time_toggle then
+            myUI.label("Time: ", os.date("%X"), white_colour)
+        end
+
+        --fps overlay row
+        if fps_toggle then
+            myUI.label("FPS: ", fps, white_colour)
+        end
+
+        --ped pool count row
+        if peds_toggle then
+            myUI.label("Peds: ", memory.read_int(pedInterface + 0x0110).."/"..memory.read_int(pedInterface + 0x0108), white_colour)
+        end
+
+        --vehicle count row
+        if vehicles_toggle then
+            myUI.label("Vehicles: ", memory.read_int(vehInterface + 0x0190).."/"..memory.read_int(vehInterface + 0x0188), white_colour)
+        end
+
+        --oject count row
+        if objects_toggle then
+            myUI.label("Objects: ", memory.read_int(objectInterface + 0x0168).."/"..memory.read_int(objectInterface + 0x0160), white_colour)
+        end
+
+        --pickup count row
+        if pickups_toggle then
+            myUI.label("Pickups: ", memory.read_int(pickupInterface + 0x0110).."/"..memory.read_int(pickupInterface + 0x0108), white_colour)
+        end
+
+         --empty row
+         if empty_toggle then
+            myUI.label("", "", white_colour)
+        end
+        --finish/complete the gui
+        myUI.finish()
+        util.yield()
     end
 end)
 
-while true do
-    util.yield() -- keeps the script running at all times.
-end
+--keep script running
+util.keep_running() 
