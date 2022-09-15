@@ -15,6 +15,10 @@ Enable a player overlay displaying the following:
 Enable an info overlay displaying information like:
 - Host
 - Script Host
+- Players
+- Modders
+- Friends
+- Strangers
 - Current Time (IRL)
 - FPS
 - Ped Pool
