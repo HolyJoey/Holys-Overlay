@@ -1,6 +1,6 @@
 -- Made by Holy#9756
 -- Credits to:
--- Murten#0001: His code as a base
+-- Murten#0001: His code as a base (https://github.com/Murten101/stand-lua_imGUI)
 -- Sapphire#6031: Memory pools
 -- SoulReaper#2005: Helped me with some examples + my autism
 
