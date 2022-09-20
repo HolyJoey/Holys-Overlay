@@ -10,6 +10,7 @@ Enable a player overlay displaying the following:
 - Attacker Status
 - Language
 - Input Device
+- Boss
 - Vehicle
 
 Enable an info overlay displaying information like:
