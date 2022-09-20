@@ -789,7 +789,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
                myUI.label(regionDetect[players.get_language(pid)].lang,"")
             end
             myUI.finish()
-            myUI.begin("Input", 0.372, 0.02, "kpj2bdgd2hkzjsdbg")
+            myUI.begin("Input", 0.376, 0.02, "kpj2bdgd2hkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
             if players.is_using_controller(pid) then
@@ -799,7 +799,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
 				end
             end
             myUI.finish()
-            myUI.begin("Vehicle", 0.426, 0.02, "kpfj2bdgd2hkzsdbg")
+            myUI.begin("Vehicle", 0.428, 0.02, "kpfj2bdgd2hkzsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
 				playerinfo1 = players.get_vehicle_model(pid)
