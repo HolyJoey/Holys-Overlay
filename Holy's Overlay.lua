@@ -751,45 +751,45 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
         UItoggle = state
         while UItoggle do
             local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
-            myUI.begin("    Players    ", 0.02, 0.02, "kpjbgkzjsdbg")
+            myUI.begin("      Players      ", 0.02, 0.02, "kpjbgkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 myUI.label(players.get_name(pid),"")
             end
             myUI.finish()
-            myUI.begin("Rank", 0.108, 0.02, "kpj2bdg2kzjsdbg")
+            myUI.begin("Rank", 0.119, 0.02, "kpj2bdg2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 myUI.label(players.get_rank(pid),"")
             end
             myUI.finish()
-            myUI.begin("Modder", 0.160, 0.02, "kpj2bdgd2kzjsdbg")
+            myUI.begin("Modder", 0.169, 0.02, "kpj2bdgd2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.is_marked_as_modder(pid) then
                     myUI.label("Modder","")
                 else
-                    myUI.label("","")
+                    myUI.label("No","")
                 end
             end
             myUI.finish()
-            myUI.begin("Attacker", 0.222, 0.02, "kpjbdg2kzjsdbg")
+            myUI.begin("Attacker", 0.231, 0.02, "kpjbdg2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.is_marked_as_attacker(pid) then
                     myUI.label("Attacker","")
                     else
-                    myUI.label("","")
+                    myUI.label("No","")
                     end
             end
             myUI.finish()
-            myUI.begin(" Language ", 0.292, 0.02, "kpjbdgkzjsdbg")
+            myUI.begin(" Language ", 0.299, 0.02, "kpjbdgkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                myUI.label(regionDetect[players.get_language(pid)].lang,"")
             end
             myUI.finish()
-            myUI.begin("Input", 0.376, 0.02, "kpj2bdgd2hkzjsdbg")
+            myUI.begin("Input", 0.383, 0.02, "kpj2bdgd2hkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
             if players.is_using_controller(pid) then
@@ -799,14 +799,24 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
 				end
             end
             myUI.finish()
-            myUI.begin("Vehicle", 0.428, 0.02, "kpfj2bdgd2hkzsdbg")
+            myUI.begin("         Boss        ", 0.435, 0.02, "kpfj3bdgd2hkzsdbg")
+            local player_table = players.list()
+            for i, pid in pairs(player_table) do
+                if players.get_boss(pid) == -1 then
+				myUI.label("N/A","")
+				else
+				myUI.label((players.get_name(players.get_boss(pid))),"")
+				end
+            end
+            myUI.finish()
+            myUI.begin("Vehicle", 0.535, 0.02, "kpfj2bdgd2hkzsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
 				playerinfo1 = players.get_vehicle_model(pid)
 				if players.get_vehicle_model(pid) == 0 then
-				myUI.label("","")
+				myUI.label("N/A","")
 				else
-				myUI.label((VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(players.get_vehicle_model(pid))),"")
+				myUI.label(util.get_label_text(VEHICLE.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(players.get_vehicle_model(pid))),"")
 				end
             end
             myUI.finish()
