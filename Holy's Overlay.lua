@@ -7,6 +7,12 @@
 util.require_natives(1660775568) 
 UI = {}
 
+--folders
+local info_root = menu.list(menu.my_root(), 'Info Overlay', {}, '')
+local info_toggles = menu.list(info_root, 'Info Overlay Toggles', {}, '')
+local info_pos = menu.list(info_root, 'Info Overlay Position', {}, '')
+local info_colour = menu.list(info_root, 'Info Overlay Colour', {}, '')
+
 UI.new = function()
     -- PRIVATE VARIABLES
     local self = {}
@@ -34,12 +40,12 @@ UI.new = function()
         ["a"] = 1.0
     }
 
-    highlight_colour = {
-        ["r"] = 1.0,
-        ["g"] = 0.0,
-        ["b"] = 0.0,
-        ["a"] = 1
-    }
+    local highlight_colour = {r=1,g=0,b=0,a=1}
+    menu.rainbow(
+        menu.colour(info_colour, "Info Overlay Colour", {"infocolour"}, "", highlight_colour, true, function(val)
+            highlight_colour = val
+        end)
+    )
 
     local plain_text_size = 0.5
     local subhead_text_size = 0.6
@@ -463,6 +469,8 @@ UI.new = function()
         local hash = util.joaat(Id or title)
             if windows[hash] ~= nil then
                 current_window = windows[hash]
+                current_window.x = x_pos
+                current_window.y = y_pos
                 current_window.open_containers = {}
                 current_window.elements = {}
                 current_window.active_container = {}
@@ -817,11 +825,6 @@ local vehInterface = memory.read_long(replayInterface + 0x0010)
 local objectInterface = memory.read_long(replayInterface + 0x0028)
 local pickupInterface = memory.read_long(replayInterface + 0x0020)
 
---folders
-local info_root = menu.list(menu.my_root(), 'Info Overlay', {}, '')
-local info_options = menu.list(info_root, 'Info Overlay Options', {}, '')
-
-
 --locals
 local session_host_toggle = false
 local session_script_host_toggle = false
@@ -835,64 +838,75 @@ local pickups_toggle = false
 local white_colour = {r = 1.0, g = 1.0, b = 1.0, a = 1.0}
 
 --toggles
-menu.toggle(info_options, "Session Host Toggle", {"SessionHostToggle"}, "", function(on)
+menu.toggle(info_toggles, "Session Host Toggle", {"SessionHostToggle"}, "", function(on)
     session_host_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Session Script Host Toggle", {"SessionScriptHostToggle"}, "", function(on)
+menu.toggle(info_toggles, "Session Script Host Toggle", {"SessionScriptHostToggle"}, "", function(on)
     session_script_host_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Players Toggle", {"PlayersToggle"}, "", function(on)
+menu.toggle(info_toggles, "Players Toggle", {"PlayersToggle"}, "", function(on)
     players_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Modders Toggle", {"ModdersToggle"}, "", function(on)
+menu.toggle(info_toggles, "Modders Toggle", {"ModdersToggle"}, "", function(on)
     modders_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Friends Toggle", {"FriendsToggle"}, "", function(on)
+menu.toggle(info_toggles, "Friends Toggle", {"FriendsToggle"}, "", function(on)
     friends_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Strangers Toggle", {"StrangersToggle"}, "", function(on)
+menu.toggle(info_toggles, "Strangers Toggle", {"StrangersToggle"}, "", function(on)
     stranger_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Time Toggle", {"TimeToggle"}, "", function(on)
+menu.toggle(info_toggles, "Time Toggle", {"TimeToggle"}, "", function(on)
     time_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "FPS Toggle", {"FPSToggle"}, "", function(on)
+menu.toggle(info_toggles, "FPS Toggle", {"FPSToggle"}, "", function(on)
     fps_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Peds Toggle", {"PedsToggle"}, "", function(on)
+menu.toggle(info_toggles, "Peds Toggle", {"PedsToggle"}, "", function(on)
     peds_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Vehicles Toggle", {"VehiclesToggle"}, "", function(on)
+menu.toggle(info_toggles, "Vehicles Toggle", {"VehiclesToggle"}, "", function(on)
     vehicles_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Objects Toggle", {"ObjectsToggle"}, "", function(on)
+menu.toggle(info_toggles, "Objects Toggle", {"ObjectsToggle"}, "", function(on)
     objects_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Pickups Toggle", {"PickupsToggle"}, "", function(on)
+menu.toggle(info_toggles, "Pickups Toggle", {"PickupsToggle"}, "", function(on)
     pickups_toggle = on
     util.yield()
 end)
-menu.toggle(info_options, "Empty Toggle", {"EmptyToggle"}, "A toggle to create some empty space where a session code can be put as an example.", function(on)
+menu.toggle(info_toggles, "Empty Toggle", {"EmptyToggle"}, "A toggle to create some empty space where a session code can be put as an example.", function(on)
     empty_toggle = on
     util.yield()
+end)
+
+-- default position
+local x = 0.17 --posX
+local y = 0.705 --posY
+
+menu.slider(info_pos, "Move X wise", {"xcoord"}, "Move the texture x coordinates.", -100, 100, 17, 1, function(datax) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
+    x=datax/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
+end)
+menu.slider(info_pos, "Move Y wise", {"ycoord"}, "Move the texture y coordinates.", -100, 100, 70, 1, function(datay) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
+    y=datay/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
 end)
 
 menu.toggle(info_root, "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute box", function(state)
     UItoggle2 = state
     while UItoggle2 do
         --start the gui
-        myUI.begin("Info Overlay",0.17, 0.705, "asdfghjkl")
+        myUI.begin("Info Overlay", x, y, "asdfghjkl")
 
         --count players in the session
         local playercount = 0
@@ -991,4 +1005,4 @@ menu.toggle(info_root, "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute 
 end)
 
 --keep script running
-util.keep_running() 
+util.keep_running()
