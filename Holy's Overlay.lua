@@ -895,10 +895,10 @@ end)
 local x = 0.17 --posX
 local y = 0.705 --posY
 
-menu.slider(info_pos, "Move X wise", {"xcoord"}, "Move the texture x coordinates.", -100, 100, 17, 1, function(datax) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
+menu.slider(info_pos, "Move X", {"xcoord"}, "Move the info overlay x coordinates.", -100, 100, 17, 1, function(datax) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
     x=datax/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
 end)
-menu.slider(info_pos, "Move Y wise", {"ycoord"}, "Move the texture y coordinates.", -100, 100, 70, 1, function(datay) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
+menu.slider(info_pos, "Move Y", {"ycoord"}, "Move the info overlay y coordinates.", -100, 100, 70, 1, function(datay) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
     y=datay/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
 end)
 
