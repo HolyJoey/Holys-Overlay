@@ -11,7 +11,10 @@ UI = {}
 local info_root = menu.list(menu.my_root(), 'Info Overlay', {}, '')
 local info_toggles = menu.list(info_root, 'Info Overlay Toggles', {}, '')
 local info_pos = menu.list(info_root, 'Info Overlay Position', {}, '')
-local info_colour = menu.list(info_root, 'Info Overlay Colour', {}, '')
+local player_overlay = menu.list(menu.my_root(), 'Players Overlay', {}, '')
+local player_pos = menu.list(player_overlay, 'Players Overlay Position', {}, '')
+local overlay_colour = menu.list(menu.my_root(), 'Overlay Colour', {}, '')
+
 local infoTitle = "Info Overlay"
 
 UI.new = function()
@@ -43,7 +46,7 @@ UI.new = function()
 
     local highlight_colour = {r=1,g=0,b=0,a=1}
     menu.rainbow(
-        menu.colour(info_colour, "Info Overlay Colour", {"infocolour"}, "", highlight_colour, true, function(val)
+        menu.colour(overlay_colour, "Overlay Colour", {"overlaycolour"}, "", highlight_colour, true, function(val)
             highlight_colour = val
         end)
     )
@@ -478,6 +481,43 @@ UI.new = function()
                 current_window.tabs = {}
                 temp_y = current_window.y
                 temp_x = current_window.x
+                --current_window.title = infoTitle
+            else
+                current_window = {
+                    x = x_pos,
+                    y = y_pos,
+                    width = sizex + 0.02,
+                    height = sizey + 0.02,
+                    title = title,
+                    horizontal = false,
+                    open_containers = {},
+                    elements = {},
+                    active_container = {},
+                    is_being_dragged = false,
+                    id = hash
+                }
+                windows[hash] = current_window
+            end
+        current_window.active_container = current_window.elements
+    end
+
+    --start a new window 2. Needed a second one or else the player overlay would get fucked over by changing the title of info overlay
+    self.begin2 = function(title, x_pos, y_pos, Id)
+        local sizex, sizey = directx.get_text_size(title, 0.6)
+        local hash = util.joaat(Id or title)
+            if windows[hash] ~= nil then
+                current_window = windows[hash]
+                current_window.x = x_pos
+                current_window.y = y_pos
+                current_window.open_containers = {}
+                current_window.elements = {}
+                current_window.active_container = {}
+                current_window.horizontal = false
+                current_window.width = sizex + 0.02
+                current_window.height = sizey + 0.02
+                current_window.tabs = {}
+                temp_y = current_window.y
+                temp_x = current_window.x
                 current_window.title = infoTitle
             else
                 current_window = {
@@ -745,24 +785,35 @@ local regionDetect = {
     [12] = {kick = false, lang = "Chinese Simplified"},
 }
 
-menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player overlay",
+-- default position
+local x2 = 0 --posX
+local y2 = 0 --posY
+
+menu.slider(player_pos, "Move X", {"xcoord2"}, "Move the players overlay x coordinates.", -100, 100, 0, 1, function(datax2) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
+    x2=datax2/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
+end)
+menu.slider(player_pos, "Move Y", {"ycoord2"}, "Move the players overlay y coordinates.", -100, 100, 0, 1, function(datay2) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
+    y2=datay2/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
+end)
+
+menu.toggle(player_overlay, "Players Overlay", {"PlayerOverlay"}, "A nice player overlay",
     function(state)
         UItoggle = state
         while UItoggle do
             local player = PLAYER.GET_PLAYER_PED_SCRIPT_INDEX(players.user())
-            myUI.begin("      Players      ", 0.02, 0.02, "kpjbgkzjsdbg")
+            myUI.begin("      Players      ", x2 + 0.02, y2 + 0.02, "kpjbgkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 myUI.label(players.get_name(pid),"")
             end
             myUI.finish()
-            myUI.begin("Rank", 0.119, 0.02, "kpj2bdg2kzjsdbg")
+            myUI.begin("Rank", x2 + 0.119, y2 + 0.02, "kpj2bdg2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 myUI.label(players.get_rank(pid),"")
             end
             myUI.finish()
-            myUI.begin("Modder", 0.169, 0.02, "kpj2bdgd2kzjsdbg")
+            myUI.begin("Modder", x2 + 0.169, y2 + 0.02, "kpj2bdgd2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.is_marked_as_modder(pid) then
@@ -772,7 +823,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
                 end
             end
             myUI.finish()
-            myUI.begin("Attacker", 0.231, 0.02, "kpjbdg2kzjsdbg")
+            myUI.begin("Attacker", x2 + 0.231, y2 + 0.02, "kpjbdg2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.is_marked_as_attacker(pid) then
@@ -782,13 +833,13 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
                     end
             end
             myUI.finish()
-            myUI.begin(" Language ", 0.299, 0.02, "kpjbdgkzjsdbg")
+            myUI.begin(" Language ", x2 + 0.299, y2 + 0.02, "kpjbdgkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                myUI.label(regionDetect[players.get_language(pid)].lang,"")
             end
             myUI.finish()
-            myUI.begin("Input", 0.383, 0.02, "kpj2bdgd2hkzjsdbg")
+            myUI.begin("Input", x2 + 0.383, y2 + 0.02, "kpj2bdgd2hkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
             if players.is_using_controller(pid) then
@@ -798,7 +849,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
 				end
             end
             myUI.finish()
-            myUI.begin("         Boss        ", 0.435, 0.02, "kpfj3bdgd2hkzsdbg")
+            myUI.begin("         Boss        ", x2 + 0.435, y2 + 0.02, "kpfj3bdgd2hkzsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.get_boss(pid) == -1 then
@@ -808,7 +859,7 @@ menu.toggle(menu.my_root(), "Players Overlay", {"PlayerOverlay"}, "A nice player
 				end
             end
             myUI.finish()
-            myUI.begin("Vehicle", 0.535, 0.02, "kpfj2bdgd2hkzsdbg")
+            myUI.begin("Vehicle", x2 + 0.535, y2 + 0.02, "kpfj2bdgd2hkzsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
 				playerinfo1 = players.get_vehicle_model(pid)
@@ -911,7 +962,7 @@ menu.slider(info_pos, "Move Y", {"ycoord"}, "Move the info overlay y coordinates
     y=datay/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
 end)
 
-menu.text_input(info_root, "Change Title", { "ChangeTitle" }, "Allows you the text on top of the info overlay", function(fuck)
+menu.text_input(info_root, "Change Title", { "ChangeTitle" }, "Allows you the text on top of the info overlay.", function(fuck)
     infoTitle = fuck
 end)
 
@@ -919,7 +970,7 @@ menu.toggle(info_root, "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute 
     UItoggle2 = state
     while UItoggle2 do
         --start the gui
-        myUI.begin(infoTitle, x, y, "asdfghjkl")
+        myUI.begin2(infoTitle, x, y, "asdfghjkl")
 
         --count players in the session
         local playercount = 0
