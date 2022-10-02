@@ -12,6 +12,7 @@ local info_root = menu.list(menu.my_root(), 'Info Overlay', {}, '')
 local info_toggles = menu.list(info_root, 'Info Overlay Toggles', {}, '')
 local info_pos = menu.list(info_root, 'Info Overlay Position', {}, '')
 local info_colour = menu.list(info_root, 'Info Overlay Colour', {}, '')
+local infoTitle = "Info Overlay"
 
 UI.new = function()
     -- PRIVATE VARIABLES
@@ -372,9 +373,6 @@ UI.new = function()
             current_window.height = sizey + 0.02
             temp_y = current_window.y
             temp_x = current_window.x
-
-            
-
         else
             current_window ={
                 x = x_pos,
@@ -480,6 +478,7 @@ UI.new = function()
                 current_window.tabs = {}
                 temp_y = current_window.y
                 temp_x = current_window.x
+                current_window.title = infoTitle
             else
                 current_window = {
                     x = x_pos,
@@ -912,11 +911,15 @@ menu.slider(info_pos, "Move Y", {"ycoord"}, "Move the info overlay y coordinates
     y=datay/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
 end)
 
+menu.text_input(info_root, "Change Title", { "ChangeTitle" }, "Allows you the text on top of the info overlay", function(fuck)
+    infoTitle = fuck
+end)
+
 menu.toggle(info_root, "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute box", function(state)
     UItoggle2 = state
     while UItoggle2 do
         --start the gui
-        myUI.begin("Info Overlay", x, y, "asdfghjkl")
+        myUI.begin(infoTitle, x, y, "asdfghjkl")
 
         --count players in the session
         local playercount = 0
