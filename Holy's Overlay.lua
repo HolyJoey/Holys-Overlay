@@ -1068,5 +1068,10 @@ menu.toggle(info_root, "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute 
     end
 end)
 
+util.show_corner_help("~s~Enjoy~h~~r~ " .. SCRIPT_FILENAME)
+util.on_stop(function()
+    util.show_corner_help("~s~Imagine closing me")
+end)
+
 --keep script running
 util.keep_running()
