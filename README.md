@@ -14,6 +14,7 @@ Enable a player overlay displaying the following:
 - Vehicle
 
 Enable an info overlay displaying information like:
+- Session Type
 - Host
 - Script Host
 - Players
