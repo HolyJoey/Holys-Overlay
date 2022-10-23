@@ -762,12 +762,15 @@ end
 myUI = UI.new()
 
 local fps = 0
+local timespendinsession = 0
 util.create_thread(function()
     while true do
         fps = math.ceil(1/SYSTEM.TIMESTEP())
         util.yield(500)
     end
 end)
+
+
 
 local regionDetect = {
     [0]  = {kick = false, lang = "English"},
@@ -878,6 +881,23 @@ menu.toggle(player_overlay, "Players Overlay", {"PlayerOverlay"}, "A nice player
 
 -- Info Window
 
+local function SessionType()
+		if util.is_session_started() then
+            if NETWORK.NETWORK_SESSION_IS_PRIVATE() then
+                return "Invite Only"
+            elseif NETWORK.NETWORK_SESSION_IS_CLOSED_CREW() then
+                return "Crew Only"
+        	elseif NETWORK.NETWORK_SESSION_IS_CLOSED_FRIENDS() then
+            	return "Friends Only"
+            elseif NETWORK.NETWORK_SESSION_IS_SOLO() then
+            	return "Solo"
+            else
+    		return "Public"
+            end
+    	end
+    return "Singleplayer"
+end
+
 --memory paths
 local replayInterface = memory.read_long(memory.rip(memory.scan("48 8D 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 48 8D 0D ? ? ? ? 8A D8 E8 ? ? ? ? 84 DB 75 13 48 8D 0D") + 3))
 local pedInterface = memory.read_long(replayInterface + 0x0018)
@@ -886,6 +906,7 @@ local objectInterface = memory.read_long(replayInterface + 0x0028)
 local pickupInterface = memory.read_long(replayInterface + 0x0020)
 
 --locals
+local session_type_toggle = false
 local session_host_toggle = false
 local session_script_host_toggle = false
 local players_toggle = false
@@ -898,6 +919,10 @@ local pickups_toggle = false
 local white_colour = {r = 1.0, g = 1.0, b = 1.0, a = 1.0}
 
 --toggles
+menu.toggle(info_toggles, "Session Type Toggle", {"SessionTypeToggle"}, "", function(on)
+    session_type_toggle = on
+    util.yield()
+end)
 menu.toggle(info_toggles, "Session Host Toggle", {"SessionHostToggle"}, "", function(on)
     session_host_toggle = on
     util.yield()
@@ -953,12 +978,12 @@ end)
 
 -- default position
 local x = 0.17 --posX
-local y = 0.705 --posY
+local y = 0.67 --posY
 
 menu.slider(info_pos, "Move X", {"xcoord"}, "Move the info overlay x coordinates.", -100, 100, 17, 1, function(datax) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
     x=datax/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
 end)
-menu.slider(info_pos, "Move Y", {"ycoord"}, "Move the info overlay y coordinates.", -100, 100, 70, 1, function(datay) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
+menu.slider(info_pos, "Move Y", {"ycoord"}, "Move the info overlay y coordinates.", -100, 100, 67, 1, function(datay) --after help text : 0 is min, 100 is max, 50 is default and 1 is step
     y=datay/100 -- put the value at 0.xx (ex : 50/100 = 0.5 default position)
 end)
 
@@ -996,6 +1021,11 @@ menu.toggle(info_root, "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute 
         local strangercount = 0
         for i, pid in pairs(players.list(false, false, true)) do
             strangercount = strangercount + 1
+        end
+
+        --session type toggle
+        if session_type_toggle then
+            myUI.label("Session Type: ", SessionType(), white_colour)
         end
 
         --session host row
