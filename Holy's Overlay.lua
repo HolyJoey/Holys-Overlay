@@ -1,4 +1,4 @@
--- Made by Holy#9756
+-- Made by Holy#6599
 -- Credits to:
 -- Murten#0001: His code as a base (https://github.com/Murten101/stand-lua_imGUI)
 -- Sapphire#6031: Memory pools
