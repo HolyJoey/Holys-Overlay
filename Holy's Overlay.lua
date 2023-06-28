@@ -1,4 +1,4 @@
--- Made by Holy#6599
+-- Made by holyjoey.
 -- Credits to:
 -- Murten#0001: His code as a base (https://github.com/Murten101/stand-lua_imGUI)
 -- Sapphire#6031: Memory pools
@@ -15,7 +15,7 @@ local player_overlay = menu.list(menu.my_root(), 'Players Overlay', {}, '')
 local player_pos = menu.list(player_overlay, 'Players Overlay Position', {}, '')
 local overlay_colour = menu.list(menu.my_root(), 'Overlay Colour', {}, '')
 
-local infoTitle = "Info Overlay"
+local infoTitle = SOCIALCLUB.SC_ACCOUNT_INFO_GET_NICKNAME()
 
 UI.new = function()
     -- PRIVATE VARIABLES
@@ -810,13 +810,13 @@ menu.toggle(player_overlay, "Players Overlay", {"PlayerOverlay"}, "A nice player
                 myUI.label(players.get_name(pid),"")
             end
             myUI.finish()
-            myUI.begin("Rank", x2 + 0.119, y2 + 0.02, "kpj2bdg2kzjsdbg")
+            myUI.begin("Rank", x2 + 0.115, y2 + 0.02, "kpj2bdg2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 myUI.label(players.get_rank(pid),"")
             end
             myUI.finish()
-            myUI.begin("Modder", x2 + 0.169, y2 + 0.02, "kpj2bdgd2kzjsdbg")
+            myUI.begin("Modder", x2 + 0.165, y2 + 0.02, "kpj2bdgd2kzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.is_marked_as_modder(pid) then
@@ -842,7 +842,7 @@ menu.toggle(player_overlay, "Players Overlay", {"PlayerOverlay"}, "A nice player
                myUI.label(regionDetect[players.get_language(pid)].lang,"")
             end
             myUI.finish()
-            myUI.begin("Input", x2 + 0.383, y2 + 0.02, "kpj2bdgd2hkzjsdbg")
+            myUI.begin("Input", x2 + 0.378, y2 + 0.02, "kpj2bdgd2hkzjsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
             if players.is_using_controller(pid) then
@@ -852,7 +852,7 @@ menu.toggle(player_overlay, "Players Overlay", {"PlayerOverlay"}, "A nice player
 				end
             end
             myUI.finish()
-            myUI.begin("         Boss        ", x2 + 0.435, y2 + 0.02, "kpfj3bdgd2hkzsdbg")
+            myUI.begin("         Boss        ", x2 + 0.431, y2 + 0.02, "kpfj3bdgd2hkzsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
                 if players.get_boss(pid) == -1 then
@@ -862,7 +862,7 @@ menu.toggle(player_overlay, "Players Overlay", {"PlayerOverlay"}, "A nice player
 				end
             end
             myUI.finish()
-            myUI.begin("Vehicle", x2 + 0.535, y2 + 0.02, "kpfj2bdgd2hkzsdbg")
+            myUI.begin("Vehicle", x2 + 0.528, y2 + 0.02, "kpfj2bdgd2hkzsdbg")
             local player_table = players.list()
             for i, pid in pairs(player_table) do
 				playerinfo1 = players.get_vehicle_model(pid)
@@ -1096,12 +1096,6 @@ menu.toggle(info_root, "Info Overlay", {"InfoOverlay"}, "Info overlay in a cute 
         myUI.finish()
         util.yield()
     end
-end)
-
--- Cry about it
-util.show_corner_help("~s~Enjoy~h~~r~ " .. SCRIPT_FILENAME)
-util.on_stop(function()
-    util.show_corner_help("~s~Imagine closing me")
 end)
 
 --keep script running
